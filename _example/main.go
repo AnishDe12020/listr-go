@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"os/exec"
+
 	"github.com/AnishDe12020/listr-go"
 )
 
@@ -12,12 +14,17 @@ func main() {
 			{
 				Title: "Task 1",
 				Run: func() error {
+					cmd := exec.Command("echo", "-l")
 					fmt.Println("Task 1")
-					return nil
+					out, err := cmd.Output()
+					fmt.Printf("%s\n", out)
+
+					return err
 				},
 			},
 		},
 	})
 
-	fmt.Printf(l.Tasks[0].Title)
+	l.Run()
+
 }

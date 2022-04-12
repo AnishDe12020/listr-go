@@ -11,7 +11,7 @@ type Task struct {
 	Run     RunFunction
 }
 
-type RunFunction func() (string error)
+type RunFunction func() error
 type SkipFunction func() bool
 
 type Options struct {
@@ -22,4 +22,15 @@ func New(options Options) *Listr {
 	return &Listr{
 		Tasks: options.Tasks,
 	}
+}
+
+func (l *Listr) Run() (string error) {
+	for _, task := range l.Tasks {
+
+		if err := task.Run(); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
