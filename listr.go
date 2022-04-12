@@ -1,5 +1,9 @@
 package listr
 
+import (
+	"github.com/AnishDe12020/spintron"
+)
+
 type Listr struct {
 	Tasks []Task
 }
@@ -27,9 +31,18 @@ func New(options Options) *Listr {
 func (l *Listr) Run() (string error) {
 	for _, task := range l.Tasks {
 
+		spintron := spinner.New(spinner.Options{
+			Text: task.Title,
+		})
+
+		spintron.Start()
+
 		if err := task.Run(); err != nil {
+			spintron.Fail(err.Error())
 			return err
 		}
+
+		spintron.Succeed(task.Title)
 	}
 
 	return nil
